@@ -3,7 +3,7 @@ import styles from './styles.scss';
 window.addEventListener('load', async () => {
   document.body.className = styles.body;
 
-  document.body.appendChild(createElement('div', 'hello'));
+  // document.body.appendChild(createElement('div', 'hello'));
 });
 
 function createElement(tagName: keyof HTMLElementTagNameMap, innerHTML?: string, options?: ElementCreationOptions) {
