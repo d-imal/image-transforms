@@ -8,7 +8,8 @@ window.addEventListener('load', async () => {
   const imagesToInvert = document.querySelectorAll('#invert tr img');
 
   imagesToInvert.forEach((row: Element) => {
-    makeImageDataFromImgElement(row as HTMLImageElement);
+    const imageData = makeImageDataFromImgElement(row as HTMLImageElement);
+    console.log(imageData);
   });
 });
 
