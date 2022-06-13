@@ -10,18 +10,35 @@ window.addEventListener('load', async () => {
   imagesToTransform.forEach((row: Element, i: number) => {
     const imageData = makeImageDataFromImgElement(row as HTMLImageElement);
 
-    const invertedImage = invertImage(imageData);
-
-    const canvas: HTMLCanvasElement | null = document.querySelector(`#transform tr:nth-child(${i + 2}) canvas.invert`);
-
-    if (canvas) {
-      canvas.width = invertedImage.width;
-      canvas.height = invertedImage.height;
-
-      canvas.getContext('2d')?.putImageData(invertedImage, 0, 0);
-    }
+    invertImagesAndRenderToPage(imageData, i);
   });
 });
+
+function invertImagesAndRenderToPage(imageData: ImageData, i: number) {
+  const invertedImage = invertImage(imageData);
+
+  const canvas: HTMLCanvasElement | null = document.querySelector(`#transform tr:nth-child(${i + 2}) canvas.invert`);
+
+  if (canvas) {
+    canvas.width = invertedImage.width;
+    canvas.height = invertedImage.height;
+
+    canvas.getContext('2d')?.putImageData(invertedImage, 0, 0);
+  }
+}
+
+function pixelateImagesAndRenderToPage(imageData: ImageData, i: number) {
+  const invertedImage = invertImage(imageData);
+
+  const canvas: HTMLCanvasElement | null = document.querySelector(`#transform tr:nth-child(${i + 2}) canvas.pixelate`);
+
+  if (canvas) {
+    canvas.width = invertedImage.width;
+    canvas.height = invertedImage.height;
+
+    canvas.getContext('2d')?.putImageData(invertedImage, 0, 0);
+  }
+}
 
 function createElement(tagName: keyof HTMLElementTagNameMap, innerHTML?: string, options?: ElementCreationOptions) {
   const element = document.createElement(tagName, options);
