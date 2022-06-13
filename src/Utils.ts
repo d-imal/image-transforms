@@ -23,5 +23,5 @@ export function makeImageDataFromImgElement(image: HTMLImageElement) {
 }
 
 export function invertImage(image: ImageData) {
-  console.log(image);
+  return image;
 }

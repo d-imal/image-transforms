@@ -9,7 +9,14 @@ window.addEventListener('load', async () => {
 
   imagesToInvert.forEach((row: Element, i: number) => {
     const imageData = makeImageDataFromImgElement(row as HTMLImageElement);
-    invertImage(imageData);
+    const transformedImage = invertImage(imageData);
+
+    const canvas: HTMLCanvasElement | null = document.querySelector(`#invert tr:nth-child(${i + 2}) canvas`);
+    console.log(canvas);
+
+    if (canvas) {
+      canvas.getContext('2d')?.putImageData(transformedImage, 0, 0);
+    }
   });
 });
 
