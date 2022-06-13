@@ -1,6 +1,14 @@
+let canvas: HTMLCanvasElement;
+let context: CanvasRenderingContext2D | null;
+
 export function makeImageDataFromImgElement(image: HTMLImageElement) {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+  }
+
+  if (!context) {
+    context = canvas.getContext('2d');
+  }
 
   canvas.width = image.width;
   canvas.height = image.height;
