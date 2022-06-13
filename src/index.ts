@@ -17,6 +17,8 @@ window.addEventListener('load', async () => {
     if (canvas) {
       canvas.width = transformedImage.width;
       canvas.height = transformedImage.height;
+      console.log({ transformedImage });
+
       canvas.getContext('2d')?.putImageData(transformedImage, 0, 0);
     }
   });
