@@ -36,7 +36,11 @@ export function invertImage(image: ImageData) {
   return imageData;
 }
 
-export function pixelateImage(image: ImageData) {
+// TODO
+// - Create chunks of pixels for each grid area that need to be averaged
+// - Then map through the chunks and return a new chunk that has all the pixels in the chunk averaged
+// - Then iterate through the averaged chunks and flatten them into one array
+export function pixelateImage(image: ImageData, gridSize: number = 5) {
   const { data } = image;
   const imageData = new ImageData(image.width, image.height);
 
