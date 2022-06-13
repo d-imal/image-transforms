@@ -12,12 +12,10 @@ window.addEventListener('load', async () => {
     const transformedImage = invertImage(imageData);
 
     const canvas: HTMLCanvasElement | null = document.querySelector(`#invert tr:nth-child(${i + 2}) canvas`);
-    console.log(canvas);
 
     if (canvas) {
       canvas.width = transformedImage.width;
       canvas.height = transformedImage.height;
-      console.log({ transformedImage });
 
       canvas.getContext('2d')?.putImageData(transformedImage, 0, 0);
     }
