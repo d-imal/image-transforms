@@ -21,3 +21,7 @@ export function makeImageDataFromImgElement(image: HTMLImageElement) {
 
   return context.getImageData(0, 0, image.width, image.height);
 }
+
+export function invertImage(image: ImageData) {
+  console.log(image);
+}

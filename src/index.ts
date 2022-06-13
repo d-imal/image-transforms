@@ -1,4 +1,4 @@
-import { makeImageDataFromImgElement } from './Utils';
+import { makeImageDataFromImgElement, invertImage } from './Utils';
 
 import styles from './styles.scss';
 
@@ -7,9 +7,9 @@ window.addEventListener('load', async () => {
 
   const imagesToInvert = document.querySelectorAll('#invert tr img');
 
-  imagesToInvert.forEach((row: Element) => {
+  imagesToInvert.forEach((row: Element, i: number) => {
     const imageData = makeImageDataFromImgElement(row as HTMLImageElement);
-    console.log(imageData);
+    invertImage(imageData);
   });
 });
 
