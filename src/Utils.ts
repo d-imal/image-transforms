@@ -35,3 +35,20 @@ export function invertImage(image: ImageData) {
 
   return imageData;
 }
+
+export function pixelateImage(image: ImageData) {
+  const { data } = image;
+  const imageData = new ImageData(image.width, image.height);
+
+  for (let y = 0; y < image.height; ++y) {
+    for (let x = 0; x < image.width; ++x) {
+      const i = (y * image.width + x) * 4;
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      const a = data[i + 3];
+    }
+  }
+
+  return imageData;
+}
