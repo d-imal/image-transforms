@@ -1,4 +1,4 @@
-import { makeImageDataFromImgElement, invertImage } from './Utils';
+import { makeImageDataFromImgElement, invertImage, pixelateImage } from './Utils';
 
 import styles from './styles.scss';
 
@@ -34,15 +34,15 @@ function invertImagesAndRenderToPage(imageData: ImageData, i: number) {
 }
 
 function pixelateImagesAndRenderToPage(imageData: ImageData, i: number) {
-  const invertedImage = invertImage(imageData);
+  const pixelatedImage = pixelateImage(imageData);
 
   const canvas: HTMLCanvasElement | null = document.querySelector(`#transform tr:nth-child(${i + 2}) canvas.pixelate`);
 
   if (canvas) {
-    canvas.width = invertedImage.width;
-    canvas.height = invertedImage.height;
+    canvas.width = pixelatedImage.width;
+    canvas.height = pixelatedImage.height;
 
-    canvas.getContext('2d')?.putImageData(invertedImage, 0, 0);
+    canvas.getContext('2d')?.putImageData(pixelatedImage, 0, 0);
   }
 }
 
