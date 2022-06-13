@@ -23,12 +23,8 @@ export function makeImageDataFromImgElement(image: HTMLImageElement) {
 }
 
 export function invertImage(image: ImageData) {
-  if (!context) {
-    throw new Error('Canvas context not created');
-  }
-
   const { data } = image;
-  const imageData = context.createImageData(image.width, image.height);
+  const imageData = new ImageData(image.width, image.height);
 
   for (let i = 0; i < data.length; i += 4) {
     imageData.data[i] = Math.abs(data[i] - 255);
