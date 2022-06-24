@@ -41,20 +41,42 @@ export function invertImage(image: ImageData) {
 // - Then map through the chunks and return a new chunk that has all the pixels in the chunk averaged
 // - Then iterate through the averaged chunks and flatten them into one array
 export function pixelateImage(image: ImageData, gridSize: number = 5) {
-  const { data } = image;
-  const imageData = new ImageData(image.width, image.height);
+  const newImageData = new ImageData(image.width, image.height);
+  const pixelChunks = makePixelChunks(image, gridSize);
 
-  for (let y = 0; y < image.height; y++) {
-    for (let x = 0; x < image.width; x++) {
-      const i = (y * image.width + x) * 4;
-      console.log({ x, y });
+  console.log(pixelChunks);
 
-      const r = data[i];
-      const g = data[i + 1];
-      const b = data[i + 2];
-      const a = data[i + 3];
+  return newImageData;
+}
+
+interface IChunkPixel {
+  coords: [number, number];
+  pixel: [number, number, number, number];
+}
+
+function makePixelChunks(image: ImageData, gridSize: number) {
+  const pixels: IChunkPixel[] = [];
+
+  for (let x = 0; x < image.width; x = x + gridSize) {
+    for (let y = 0; y < image.height; y = y + gridSize) {
+      const chunkIndex = (y * image.width + x) * 4;
+
+      for (let chunkX = x; chunkX < x + gridSize; chunkX++) {
+        for (let chunkY = y; chunkY < y + gridSize; chunkY++) {
+          const pixelIndex = (chunkY * image.width + chunkX) * 4;
+          const r = image.data[pixelIndex];
+          const g = image.data[pixelIndex + 1];
+          const b = image.data[pixelIndex + 2];
+          const a = image.data[pixelIndex + 3];
+
+          pixels[chunkIndex] = {
+            coords: [chunkX, chunkY],
+            pixel: [r, g, b, a],
+          };
+        }
+      }
     }
   }
 
-  return imageData;
+  return pixels;
 }
