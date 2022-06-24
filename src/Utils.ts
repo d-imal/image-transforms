@@ -36,22 +36,36 @@ export function invertImage(image: ImageData) {
   return imageData;
 }
 
+type IPixel = [number, number, number, number];
+
+interface IChunkPixel {
+  coords: [number, number];
+  pixel: IPixel;
+}
+
 // TODO
 // - Create chunks of pixels for each grid area that need to be averaged
 // - Then map through the chunks and return a new chunk that has all the pixels in the chunk averaged
 // - Then iterate through the averaged chunks and flatten them into one array
-export function pixelateImage(image: ImageData, gridSize: number = 5) {
+export function pixelateImage(image: ImageData, gridSize: number = 100) {
   const newImageData = new ImageData(image.width, image.height);
   const pixelChunks = makePixelChunks(image, gridSize);
 
-  console.log(pixelChunks);
+  pixelChunks.map((pixelChunks: IChunkPixel[]) => {
+    const pixelSums: IPixel = [0, 0, 0, 0];
+
+    pixelChunks.forEach((currentPixel) => {
+      const { pixel } = currentPixel;
+      pixelSums[0] = pixelSums[0] + pixel[0];
+      pixelSums[1] = pixelSums[1] + pixel[1];
+      pixelSums[2] = pixelSums[2] + pixel[2];
+      pixelSums[3] = pixelSums[3] + pixel[3];
+    });
+
+    console.log({ pixelSums });
+  });
 
   return newImageData;
-}
-
-interface IChunkPixel {
-  coords: [number, number];
-  pixel: [number, number, number, number];
 }
 
 function makePixelChunks(image: ImageData, gridSize: number) {
