@@ -55,7 +55,7 @@ interface IChunkPixel {
 }
 
 function makePixelChunks(image: ImageData, gridSize: number) {
-  const pixels: IChunkPixel[] = [];
+  const pixels: [IChunkPixel[]] = [[]];
 
   for (let x = 0; x < image.width; x = x + gridSize) {
     for (let y = 0; y < image.height; y = y + gridSize) {
@@ -69,10 +69,16 @@ function makePixelChunks(image: ImageData, gridSize: number) {
           const b = image.data[pixelIndex + 2];
           const a = image.data[pixelIndex + 3];
 
-          pixels[chunkIndex] = {
+          const pixelChunk: IChunkPixel = {
             coords: [chunkX, chunkY],
             pixel: [r, g, b, a],
           };
+
+          if (!pixels[chunkIndex]) {
+            pixels[chunkIndex] = [pixelChunk];
+          } else {
+            pixels[chunkIndex].push(pixelChunk);
+          }
         }
       }
     }
