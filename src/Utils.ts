@@ -58,27 +58,26 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
   const pixelChunks = makePixelChunks(image, gridSize);
   const averagePixelChunks = makeAveragePixelChunks(pixelChunks, gridSize);
 
-  console.log({ averagePixelChunks });
+  // console.log({ averagePixelChunks });
   const newImageDataArray: IPixel[] = [];
 
   averagePixelChunks.forEach((pixelChunk) => {
-    console.log({ pixelChunks });
+    // console.log({ pixelChunks });
 
     pixelChunk.subpixels.forEach((subpixel: IChunkSubpixel) => {
-      console.log({ pixelChunk });
+      // console.log({ pixelChunk });
 
       const chunkIndex = (subpixel.coords[0] * image.width + subpixel.coords[1]) * 4;
 
       if (pixelChunk.average) {
-        newImageDataArray[chunkIndex] = pixelChunk.average;
+        newImageDataArray[chunkIndex] = subpixel.pixel;
       }
     });
   });
 
   const flatImageData = newImageDataArray.flat();
-  const newImageData = new ImageData(new Uint8ClampedArray(flatImageData), image.width, image.height);
-
   console.log({ newImageDataArray, flatImageData });
+  const newImageData = new ImageData(new Uint8ClampedArray(flatImageData), image.width, image.height);
 
   return newImageData;
 }
