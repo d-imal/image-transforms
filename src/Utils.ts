@@ -46,6 +46,7 @@ interface IChunkSubpixel {
 interface IPixelChunk {
   coords: [number, number];
   chunks: IChunkSubpixel[];
+  sum?: IPixel;
 }
 
 // TODO
@@ -55,9 +56,6 @@ interface IPixelChunk {
 export function pixelateImage(image: ImageData, gridSize: number = 10) {
   const newImageData = new ImageData(image.width, image.height);
   const pixelChunks = makePixelChunks(image, gridSize);
-  const pixelSums: IPixel[] = [];
-
-  console.log({ pixelChunks });
 
   pixelChunks.forEach((pixelChunks: IPixelChunk) => {
     const pixelSum: IPixel = [0, 0, 0, 0];
@@ -71,10 +69,10 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
       pixelSum[3] = pixelSum[3] + pixel[3];
     });
 
-    pixelSums.push(pixelSum);
+    pixelChunks.sum = pixelSum;
   });
 
-  console.log({ pixelSums });
+  console.log({ pixelChunks });
 
   return newImageData;
 }
