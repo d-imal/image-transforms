@@ -75,7 +75,7 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
 }
 
 function makePixelChunks(image: ImageData, gridSize: number) {
-  const pixels: [IChunkPixel[]] = [[]];
+  const pixelChunks: [IChunkPixel[]] = [[]];
 
   for (let x = 0; x < image.width; x = x + gridSize) {
     for (let y = 0; y < image.height; y = y + gridSize) {
@@ -94,15 +94,15 @@ function makePixelChunks(image: ImageData, gridSize: number) {
             pixel: [r, g, b, a],
           };
 
-          if (!pixels[chunkIndex]) {
-            pixels[chunkIndex] = [pixelChunk];
+          if (!pixelChunks[chunkIndex]) {
+            pixelChunks[chunkIndex] = [pixelChunk];
           } else {
-            pixels[chunkIndex].push(pixelChunk);
+            pixelChunks[chunkIndex].push(pixelChunk);
           }
         }
       }
     }
   }
 
-  return pixels;
+  return pixelChunks.filter((pixelChunk) => !!pixelChunk);
 }
