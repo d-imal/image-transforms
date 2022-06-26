@@ -67,14 +67,15 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
     pixelChunk.subpixels.forEach((subpixel: IChunkSubpixel) => {
       console.log({ subpixel });
 
-      const chunkIndex = (pixelChunk.coords[0] * image.width + pixelChunk.coords[1]) * 4;
+      const chunkIndex = (subpixel.coords[0] * image.width + subpixel.coords[1]) * 4;
+      // console.log({ chunkIndex });
 
       newImageDataArray[chunkIndex] = subpixel.pixel;
     });
   });
 
   const flatImageData = newImageDataArray.flat();
-  console.log({ newImageDataArray, flatImageData });
+  // console.log({ newImageDataArray, flatImageData });
 
   const newImageData = new ImageData(new Uint8ClampedArray(flatImageData), image.width, image.height);
 
@@ -82,6 +83,7 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
 }
 
 function makeAveragePixelChunks(gridChunks: IGridChunk[], gridSize: number): IGridChunk[] {
+  // Augment each gridChunk in gridChunks with its average pixel
   gridChunks.forEach((gridChunk: IGridChunk) => {
     const pixelSum: IPixel = [0, 0, 0, 0];
 
@@ -104,13 +106,16 @@ function makeAveragePixelChunks(gridChunks: IGridChunk[], gridSize: number): IGr
     ];
   });
 
+  // Convert that to an array of IGridChunks with each subpixel filled in with the average
   return gridChunks.map((gridChunk) => {
-    const averageArray = new Array(gridChunk.subpixels.length);
-    averageArray.fill(gridChunk.average);
-
     return {
       ...gridChunk,
-      subpixels: averageArray,
+      subpixels: gridChunk.subpixels.map((subpixel: IChunkSubpixel) => {
+        return {
+          coords: subpixel.coords,
+          pixel: gridChunk.average as IPixel,
+        };
+      }),
     };
   });
 }
