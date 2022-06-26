@@ -36,7 +36,7 @@ function invertImagesAndRenderToPage(imageData: ImageData, i: number) {
 function pixelateImagesAndRenderToPage(imageData: ImageData, i: number) {
   const pixelatedImage = pixelateImage(imageData);
 
-  const canvas: HTMLCanvasElement | null = document.querySelector(`#transform tr:nth-child(${i + 3}) canvas.pixelate`);
+  const canvas: HTMLCanvasElement | null = document.querySelector(`#transform tr:nth-child(${i + 2}) canvas.pixelate`);
 
   if (canvas) {
     canvas.width = pixelatedImage.width;

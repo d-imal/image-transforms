@@ -45,7 +45,7 @@ interface IChunkSubpixel {
 
 interface IPixelChunk {
   coords: [number, number];
-  chunks: IChunkSubpixel[];
+  subpixels: IChunkSubpixel[];
   sum?: IPixel;
   average?: IPixel;
 }
@@ -55,20 +55,36 @@ interface IPixelChunk {
 // - Then map through the chunks and return a new chunk that has all the pixels in the chunk averaged
 // - Then iterate through the averaged chunks and flatten them into one array
 export function pixelateImage(image: ImageData, gridSize: number = 10) {
-  const newImageData = new ImageData(image.width, image.height);
   const pixelChunks = makePixelChunks(image, gridSize);
   const averagePixelChunks = makeAveragePixelChunks(pixelChunks, gridSize);
 
   console.log({ averagePixelChunks });
+  const newImageDataArray = [];
+
+  averagePixelChunks.forEach((pixelChunk) => {
+    console.log({ pixelChunks });
+
+    pixelChunk.subpixels.forEach((subpixel: IChunkSubpixel) => {
+      console.log({ pixelChunk });
+
+      const chunkIndex = (subpixel.coords[0] * image.width + subpixel.coords[1]) * 4;
+      newImageDataArray[chunkIndex] = pixelChunk.average;
+    });
+  });
+
+  const flatImageData = newImageDataArray.flat();
+  console.log({ newImageDataArray, flatImageData });
+
+  const newImageData = new ImageData(new Uint8ClampedArray(flatImageData), image.width, image.height);
 
   return newImageData;
 }
 
-function makeAveragePixelChunks(pixelChunks: IPixelChunk[], gridSize: number) {
+function makeAveragePixelChunks(pixelChunks: IPixelChunk[], gridSize: number): IPixelChunk[] {
   pixelChunks.forEach((pixelChunks: IPixelChunk) => {
     const pixelSum: IPixel = [0, 0, 0, 0];
 
-    pixelChunks.chunks.forEach((currentPixel) => {
+    pixelChunks.subpixels.forEach((currentPixel) => {
       const { pixel } = currentPixel;
 
       pixelSum[0] = pixelSum[0] + pixel[0];
@@ -88,7 +104,7 @@ function makeAveragePixelChunks(pixelChunks: IPixelChunk[], gridSize: number) {
   });
 
   return pixelChunks.map((pixelChunk) => {
-    const averageArray = new Array(pixelChunk.chunks.length);
+    const averageArray = new Array(pixelChunk.subpixels.length);
     averageArray.fill(pixelChunk.average);
 
     return {
@@ -121,10 +137,10 @@ function makePixelChunks(image: ImageData, gridSize: number) {
           if (!pixelChunks[chunkIndex]) {
             pixelChunks[chunkIndex] = {
               coords: [chunkX, chunkY],
-              chunks: [chunkSubpixel],
+              subpixels: [chunkSubpixel],
             };
           } else {
-            pixelChunks[chunkIndex].chunks.push(chunkSubpixel);
+            pixelChunks[chunkIndex].subpixels.push(chunkSubpixel);
           }
         }
       }
