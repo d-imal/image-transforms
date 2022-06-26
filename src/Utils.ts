@@ -54,10 +54,10 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
 
   console.log({ pixelChunks });
 
-  pixelChunks.forEach((pixelChunks: IChunkSubpixel[]) => {
+  pixelChunks.forEach((pixelChunks: IPixelChunk) => {
     const pixelSum: IPixel = [0, 0, 0, 0];
 
-    pixelChunks.forEach((currentPixel) => {
+    pixelChunks.chunks.forEach((currentPixel) => {
       const { pixel } = currentPixel;
 
       pixelSum[0] = pixelSum[0] + pixel[0];
@@ -74,8 +74,13 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
   return newImageData;
 }
 
+interface IPixelChunk {
+  coords: [number, number];
+  chunks: IChunkSubpixel[];
+}
+
 function makePixelChunks(image: ImageData, gridSize: number) {
-  const pixelChunks: [IChunkSubpixel[]] = [[]];
+  const pixelChunks: IPixelChunk[] = [];
 
   for (let x = 0; x < image.width; x = x + gridSize) {
     for (let y = 0; y < image.height; y = y + gridSize) {
@@ -95,9 +100,12 @@ function makePixelChunks(image: ImageData, gridSize: number) {
           };
 
           if (!pixelChunks[chunkIndex]) {
-            pixelChunks[chunkIndex] = [chunkSubpixel];
+            pixelChunks[chunkIndex] = {
+              coords: [chunkX, chunkY],
+              chunks: [chunkSubpixel],
+            };
           } else {
-            pixelChunks[chunkIndex].push(chunkSubpixel);
+            pixelChunks[chunkIndex].chunks.push(chunkSubpixel);
           }
         }
       }
