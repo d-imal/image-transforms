@@ -1,6 +1,20 @@
 let canvas: HTMLCanvasElement;
 let context: CanvasRenderingContext2D | null;
 
+type IPixel = [number, number, number, number];
+
+interface IChunkSubpixel {
+  coords: [number, number];
+  pixel: IPixel;
+}
+
+interface IGridChunk {
+  coords: [number, number];
+  subpixels: IChunkSubpixel[];
+  sum?: IPixel;
+  average?: IPixel;
+}
+
 export function makeImageDataFromImgElement(image: HTMLImageElement) {
   if (!canvas) {
     canvas = document.createElement('canvas');
@@ -36,26 +50,8 @@ export function invertImage(image: ImageData) {
   return imageData;
 }
 
-type IPixel = [number, number, number, number];
-
-interface IChunkSubpixel {
-  coords: [number, number];
-  pixel: IPixel;
-}
-
-interface IPixelChunk {
-  coords: [number, number];
-  subpixels: IChunkSubpixel[];
-  sum?: IPixel;
-  average?: IPixel;
-}
-
-// TODO
-// - Create chunks of pixels for each grid area that need to be averaged
-// - Then map through the chunks and return a new chunk that has all the pixels in the chunk averaged
-// - Then iterate through the averaged chunks and flatten them into one array
 export function pixelateImage(image: ImageData, gridSize: number = 10) {
-  const pixelChunks = makePixelChunks(image, gridSize);
+  const pixelChunks = makeGridChunks(image, gridSize);
   const averagePixelChunks = makeAveragePixelChunks(pixelChunks, gridSize);
 
   // console.log({ averagePixelChunks });
@@ -82,11 +78,11 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
   return newImageData;
 }
 
-function makeAveragePixelChunks(pixelChunks: IPixelChunk[], gridSize: number): IPixelChunk[] {
-  pixelChunks.forEach((pixelChunks: IPixelChunk) => {
+function makeAveragePixelChunks(gridChunks: IGridChunk[], gridSize: number): IGridChunk[] {
+  gridChunks.forEach((gridChunk: IGridChunk) => {
     const pixelSum: IPixel = [0, 0, 0, 0];
 
-    pixelChunks.subpixels.forEach((currentPixel) => {
+    gridChunk.subpixels.forEach((currentPixel) => {
       const { pixel } = currentPixel;
 
       pixelSum[0] = pixelSum[0] + pixel[0];
@@ -97,7 +93,7 @@ function makeAveragePixelChunks(pixelChunks: IPixelChunk[], gridSize: number): I
 
     const chunkPixelAmount = gridSize ** 2;
 
-    pixelChunks.average = [
+    gridChunk.average = [
       pixelSum[0] / chunkPixelAmount,
       pixelSum[1] / chunkPixelAmount,
       pixelSum[2] / chunkPixelAmount,
@@ -105,19 +101,19 @@ function makeAveragePixelChunks(pixelChunks: IPixelChunk[], gridSize: number): I
     ];
   });
 
-  return pixelChunks.map((pixelChunk) => {
-    const averageArray = new Array(pixelChunk.subpixels.length);
-    averageArray.fill(pixelChunk.average);
+  return gridChunks.map((gridChunk) => {
+    const averageArray = new Array(gridChunk.subpixels.length);
+    averageArray.fill(gridChunk.average);
 
     return {
-      ...pixelChunk,
+      ...gridChunk,
       chunks: averageArray,
     };
   });
 }
 
-function makePixelChunks(image: ImageData, gridSize: number) {
-  const pixelChunks: IPixelChunk[] = [];
+function makeGridChunks(image: ImageData, gridSize: number): IGridChunk[] {
+  const gridChunks: IGridChunk[] = [];
 
   for (let x = 0; x < image.width; x = x + gridSize) {
     for (let y = 0; y < image.height; y = y + gridSize) {
@@ -136,18 +132,18 @@ function makePixelChunks(image: ImageData, gridSize: number) {
             pixel: [r, g, b, a],
           };
 
-          if (!pixelChunks[chunkIndex]) {
-            pixelChunks[chunkIndex] = {
+          if (!gridChunks[chunkIndex]) {
+            gridChunks[chunkIndex] = {
               coords: [chunkX, chunkY],
               subpixels: [chunkSubpixel],
             };
           } else {
-            pixelChunks[chunkIndex].subpixels.push(chunkSubpixel);
+            gridChunks[chunkIndex].subpixels.push(chunkSubpixel);
           }
         }
       }
     }
   }
 
-  return pixelChunks.filter((pixelChunk) => !!pixelChunk);
+  return gridChunks.filter((pixelChunk) => !!pixelChunk);
 }
