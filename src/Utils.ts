@@ -50,23 +50,27 @@ interface IChunkPixel {
 export function pixelateImage(image: ImageData, gridSize: number = 100) {
   const newImageData = new ImageData(image.width, image.height);
   const pixelChunks = makePixelChunks(image, gridSize);
+  const pixelSums: IPixel[] = [];
+
   console.log({ pixelChunks });
 
-  const pixelSums = [];
-  pixelChunks.map((pixelChunks: IChunkPixel[]) => {
+  pixelChunks.forEach((pixelChunks: IChunkPixel[]) => {
     const pixelSum: IPixel = [0, 0, 0, 0];
 
     pixelChunks.forEach((currentPixel) => {
       const { pixel } = currentPixel;
+
       pixelSum[0] = pixelSum[0] + pixel[0];
       pixelSum[1] = pixelSum[1] + pixel[1];
       pixelSum[2] = pixelSum[2] + pixel[2];
       pixelSum[3] = pixelSum[3] + pixel[3];
     });
+
     pixelSums.push(pixelSum);
   });
 
   console.log({ pixelSums });
+
   return newImageData;
 }
 
