@@ -57,7 +57,14 @@ interface IPixelChunk {
 export function pixelateImage(image: ImageData, gridSize: number = 10) {
   const newImageData = new ImageData(image.width, image.height);
   const pixelChunks = makePixelChunks(image, gridSize);
+  const averagePixelChunks = makeAveragePixelChunks(pixelChunks, gridSize);
 
+  console.log({ averagePixelChunks });
+
+  return newImageData;
+}
+
+function makeAveragePixelChunks(pixelChunks: IPixelChunk[], gridSize: number) {
   pixelChunks.forEach((pixelChunks: IPixelChunk) => {
     const pixelSum: IPixel = [0, 0, 0, 0];
 
@@ -80,9 +87,15 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
     ];
   });
 
-  console.log({ pixelChunks });
+  return pixelChunks.map((pixelChunk) => {
+    const averageArray = new Array(pixelChunk.chunks.length);
+    averageArray.fill(pixelChunk.average);
 
-  return newImageData;
+    return {
+      ...pixelChunk,
+      chunks: averageArray,
+    };
+  });
 }
 
 function makePixelChunks(image: ImageData, gridSize: number) {
