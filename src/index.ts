@@ -13,6 +13,11 @@ window.addEventListener('load', async () => {
     invertImagesAndRenderToPage(imageData, i);
   });
 
+  // imagesToTransform.forEach((imageElement: Element, i: number) => {
+  //   const imageData = makeImageDataFromImgElement(imageElement as HTMLImageElement);
+
+  //   pixelateImagesAndRenderToPage(imageData, i);
+  // });
   const imageElementToPixelate = document.querySelector('#transform tr:nth-child(2) img');
   console.log({ imageToPixelate: imageElementToPixelate });
   const imageToPixelate = makeImageDataFromImgElement(imageElementToPixelate as HTMLImageElement);
