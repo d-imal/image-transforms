@@ -47,6 +47,7 @@ interface IPixelChunk {
   coords: [number, number];
   chunks: IChunkSubpixel[];
   sum?: IPixel;
+  average?: IPixel;
 }
 
 // TODO
@@ -69,7 +70,14 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
       pixelSum[3] = pixelSum[3] + pixel[3];
     });
 
-    pixelChunks.sum = pixelSum;
+    const chunkPixelAmount = gridSize ** 2;
+
+    pixelChunks.average = [
+      pixelSum[0] / chunkPixelAmount,
+      pixelSum[1] / chunkPixelAmount,
+      pixelSum[2] / chunkPixelAmount,
+      pixelSum[3] / chunkPixelAmount,
+    ];
   });
 
   console.log({ pixelChunks });
