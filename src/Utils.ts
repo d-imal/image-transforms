@@ -47,7 +47,7 @@ interface IChunkPixel {
 // - Create chunks of pixels for each grid area that need to be averaged
 // - Then map through the chunks and return a new chunk that has all the pixels in the chunk averaged
 // - Then iterate through the averaged chunks and flatten them into one array
-export function pixelateImage(image: ImageData, gridSize: number = 100) {
+export function pixelateImage(image: ImageData, gridSize: number = 10) {
   const newImageData = new ImageData(image.width, image.height);
   const pixelChunks = makePixelChunks(image, gridSize);
   const pixelSums: IPixel[] = [];
