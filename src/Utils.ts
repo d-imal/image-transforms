@@ -43,6 +43,11 @@ interface IChunkSubpixel {
   pixel: IPixel;
 }
 
+interface IPixelChunk {
+  coords: [number, number];
+  chunks: IChunkSubpixel[];
+}
+
 // TODO
 // - Create chunks of pixels for each grid area that need to be averaged
 // - Then map through the chunks and return a new chunk that has all the pixels in the chunk averaged
@@ -72,11 +77,6 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
   console.log({ pixelSums });
 
   return newImageData;
-}
-
-interface IPixelChunk {
-  coords: [number, number];
-  chunks: IChunkSubpixel[];
 }
 
 function makePixelChunks(image: ImageData, gridSize: number) {
