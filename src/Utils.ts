@@ -11,8 +11,12 @@ interface IChunkSubpixel {
 interface IGridChunk {
   coords: [number, number];
   subpixels: IChunkSubpixel[];
-  sum?: IPixel;
   average?: IPixel;
+}
+
+interface IAverageGridChunk {
+  coords: [number, number];
+  average: IPixel;
 }
 
 export function makeImageDataFromImgElement(image: HTMLImageElement) {
@@ -54,25 +58,24 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
   const pixelChunks = makeGridChunks(image, gridSize);
   const averagePixelChunks = makeAveragePixelChunks(pixelChunks, gridSize);
 
-  // console.log({ averagePixelChunks });
+  console.log({ averagePixelChunks });
   const newImageDataArray: IPixel[] = [];
 
   averagePixelChunks.forEach((pixelChunk) => {
     // console.log({ pixelChunks });
 
     pixelChunk.subpixels.forEach((subpixel: IChunkSubpixel) => {
-      // console.log({ pixelChunk });
+      console.log({ subpixel });
 
-      const chunkIndex = (subpixel.coords[0] * image.width + subpixel.coords[1]) * 4;
+      const chunkIndex = (pixelChunk.coords[0] * image.width + pixelChunk.coords[1]) * 4;
 
-      if (pixelChunk.average) {
-        newImageDataArray[chunkIndex] = subpixel.pixel;
-      }
+      newImageDataArray[chunkIndex] = subpixel.pixel;
     });
   });
 
   const flatImageData = newImageDataArray.flat();
   console.log({ newImageDataArray, flatImageData });
+
   const newImageData = new ImageData(new Uint8ClampedArray(flatImageData), image.width, image.height);
 
   return newImageData;
@@ -107,7 +110,7 @@ function makeAveragePixelChunks(gridChunks: IGridChunk[], gridSize: number): IGr
 
     return {
       ...gridChunk,
-      chunks: averageArray,
+      subpixels: averageArray,
     };
   });
 }
