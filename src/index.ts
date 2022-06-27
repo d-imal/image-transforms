@@ -48,13 +48,3 @@ function pixelateImagesAndRenderToPage(imageData: ImageData, i: number) {
     canvas.getContext('2d')?.putImageData(pixelatedImage, 0, 0);
   }
 }
-
-function createElement(tagName: keyof HTMLElementTagNameMap, innerHTML?: string, options?: ElementCreationOptions) {
-  const element = document.createElement(tagName, options);
-
-  if (innerHTML) {
-    element.innerHTML = innerHTML;
-  }
-
-  return element;
-}
