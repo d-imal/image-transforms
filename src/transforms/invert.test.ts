@@ -1,7 +1,7 @@
 import fc from 'fast-check';
 import { invert, invertImageDataArray } from './invert';
 
-describe('invert', () => {
+describe('invertImageDataArray', () => {
   describe('properties', () => {
     it('should not equal the original input', () => {
       fc.assert(
@@ -32,3 +32,10 @@ describe('invert', () => {
     });
   });
 });
+
+const arbitraryImageData: fc.Arbitrary<ImageData> = fc
+  .uint8ClampedArray()
+  .filter((data) => data.length % 4 === 0)
+  .map((data) => {
+    return new ImageData(data, 100, 100);
+  });
