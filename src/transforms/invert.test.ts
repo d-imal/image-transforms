@@ -17,6 +17,18 @@ describe('invert', () => {
       );
     });
 
-    it('should equal the original input when called on the output a second time', () => {});
+    it('should equal the original input when called on the output a second time', () => {
+      fc.assert(
+        fc.property(
+          fc.uint8ClampedArray({
+            minLength: 4,
+          }),
+          (array) => {
+            const result = invertImageDataArray(invertImageDataArray(array));
+            expect(result).toEqual(array);
+          }
+        )
+      );
+    });
   });
 });
