@@ -63,7 +63,7 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
   // Place the averaged grid chunks into a data array at the correct index
   averagePixelChunks.forEach((pixelChunk) => {
     pixelChunk.subpixels.forEach((subpixel: IChunkSubpixel) => {
-      const chunkIndex = (subpixel.coords[0] * image.width + subpixel.coords[1]) * 4;
+      const chunkIndex = subpixel.coords[1] * image.width * 4 + subpixel.coords[0] * 4;
 
       newImageDataArray[chunkIndex] = subpixel.pixel;
     });
@@ -119,7 +119,7 @@ function makeGridChunks(image: ImageData, gridSize: number): IGridChunk[] {
 
   for (let x = 0; x < image.width; x = x + gridSize) {
     for (let y = 0; y < image.height; y = y + gridSize) {
-      const chunkIndex = (y * image.width + x) * 4;
+      const chunkIndex = y * image.width * 4 + x * 4;
 
       for (let chunkX = x; chunkX < x + gridSize; chunkX++) {
         for (let chunkY = y; chunkY < y + gridSize; chunkY++) {
