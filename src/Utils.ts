@@ -123,7 +123,8 @@ function makeGridChunks(image: ImageData, gridSize: number): IGridChunk[] {
 
       for (let chunkX = x; chunkX < x + gridSize; chunkX++) {
         for (let chunkY = y; chunkY < y + gridSize; chunkY++) {
-          const pixelIndex = (chunkY * image.width + chunkX) * 4;
+          const pixelIndex = chunkY * image.width * 4 + chunkX * 4;
+
           const r = image.data[pixelIndex];
           const g = image.data[pixelIndex + 1];
           const b = image.data[pixelIndex + 2];
