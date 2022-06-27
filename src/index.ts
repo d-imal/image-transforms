@@ -13,16 +13,15 @@ window.addEventListener('load', async () => {
     invertImagesAndRenderToPage(imageData, i);
   });
 
-  // imagesToTransform.forEach((imageElement: Element, i: number) => {
-  //   const imageData = makeImageDataFromImgElement(imageElement as HTMLImageElement);
+  imagesToTransform.forEach((imageElement: Element, i: number) => {
+    const imageData = makeImageDataFromImgElement(imageElement as HTMLImageElement);
 
-  //   pixelateImagesAndRenderToPage(imageData, i);
-  // });
-  const imageElementToPixelate = document.querySelector('#transform tr:nth-child(2) img');
-  console.log({ imageToPixelate: imageElementToPixelate });
-  const imageToPixelate = makeImageDataFromImgElement(imageElementToPixelate as HTMLImageElement);
+    pixelateImagesAndRenderToPage(imageData, i);
+  });
+  // const imageElementToPixelate = document.querySelector('#transform tr:nth-child(2) img');
+  // const imageToPixelate = makeImageDataFromImgElement(imageElementToPixelate as HTMLImageElement);
 
-  pixelateImagesAndRenderToPage(imageToPixelate, 0);
+  // pixelateImagesAndRenderToPage(imageToPixelate, 0);
 });
 
 function invertImagesAndRenderToPage(imageData: ImageData, i: number) {
