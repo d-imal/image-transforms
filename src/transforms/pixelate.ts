@@ -15,7 +15,7 @@ function getInitialIndexForCoord(x: number, y: number, width: number) {
   return x * 4 + y * (width * 4);
 }
 
-function pixelateImage(image: ImageData, gridSize: number = 10) {
+export function pixelate(image: ImageData, gridSize: number = 10) {
   const pixelChunks = makeGridChunks(image, gridSize);
   const averagePixelChunks = makeAveragePixelChunks(pixelChunks, gridSize);
 
@@ -112,5 +112,3 @@ function makeGridChunks(image: ImageData, gridSize: number): IGridChunk[] {
 
   return gridChunks.filter((pixelChunk) => !!pixelChunk);
 }
-
-export default pixelateImage;

@@ -1,4 +1,4 @@
-function invertImage(image: ImageData) {
+export function invert(image: ImageData) {
   const { data } = image;
   const imageData = new ImageData(image.width, image.height);
 
@@ -11,5 +11,3 @@ function invertImage(image: ImageData) {
 
   return imageData;
 }
-
-export default invertImage;
