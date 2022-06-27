@@ -39,11 +39,19 @@ function renderImageToTable(i: number, imageData: ImageData, canvasClassName: st
   );
 
   if (canvas) {
+    const context = canvas.getContext('2d');
+
     canvas.width = imageData.width;
     canvas.height = imageData.height;
 
-    canvas.getContext('2d')?.putImageData(imageData, 0, 0);
+    if (context) {
+      context.putImageData(imageData, 0, 0);
+    } else {
+      throw new Error(`Canvas context not created for ".${canvasClassName}"`);
+    }
   } else {
-    throw new Error("The canvas wasn't found! Is the classname correct? Did the structure of the table DOM change?");
+    throw new Error(
+      `The canvas element for ".${canvasClassName}" wasn't found! Is the classname correct? Did the structure of the table DOM change?`
+    );
   }
 }
