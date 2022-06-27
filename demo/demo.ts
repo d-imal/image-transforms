@@ -1,6 +1,6 @@
-import { makeImageDataFromImgElement } from './utils';
+import { makeImageDataFromImgElement } from '../src/utils';
 
-import { invert, pixelate } from './transforms';
+import { invert, pixelate } from '../src/transforms';
 
 import styles from './styles.scss';
 

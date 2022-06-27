@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 const config = {
-  entry: './src/index.ts',
+  entry: './demo/demo.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
@@ -61,7 +61,7 @@ const config = {
   plugins: [
     new HtmlWebpackPlugin({
       title: path.basename(__dirname),
-      template: 'src/index.html',
+      template: 'demo/demo.html',
     }),
     new CopyPlugin({
       patterns: [{ from: './images', to: './images' }],
