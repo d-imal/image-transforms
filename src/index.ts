@@ -1,4 +1,7 @@
-import { makeImageDataFromImgElement, invertImage, pixelateImage } from './Utils';
+import { makeImageDataFromImgElement } from './utils';
+
+import invert from './transforms/invert';
+import pixelate from './transforms/pixelate';
 
 import styles from './styles.scss';
 
@@ -18,14 +21,10 @@ window.addEventListener('load', async () => {
 
     pixelateImagesAndRenderToPage(imageData, i);
   });
-  // const imageElementToPixelate = document.querySelector('#transform tr:nth-child(2) img');
-  // const imageToPixelate = makeImageDataFromImgElement(imageElementToPixelate as HTMLImageElement);
-
-  // pixelateImagesAndRenderToPage(imageToPixelate, 0);
 });
 
 function invertImagesAndRenderToPage(imageData: ImageData, i: number) {
-  const invertedImage = invertImage(imageData);
+  const invertedImage = invert(imageData);
 
   const canvas: HTMLCanvasElement | null = document.querySelector(`#transform tr:nth-child(${i + 2}) canvas.invert`);
 
@@ -38,7 +37,7 @@ function invertImagesAndRenderToPage(imageData: ImageData, i: number) {
 }
 
 function pixelateImagesAndRenderToPage(imageData: ImageData, i: number) {
-  const pixelatedImage = pixelateImage(imageData);
+  const pixelatedImage = pixelate(imageData);
 
   const canvas: HTMLCanvasElement | null = document.querySelector(`#transform tr:nth-child(${i + 2}) canvas.pixelate`);
 
