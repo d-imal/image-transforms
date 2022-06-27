@@ -19,6 +19,10 @@ interface IAverageGridChunk {
   average: IPixel;
 }
 
+function getInitialIndexForCoord(x: number, y: number, width: number) {
+  return x * 4 + y * (width * 4);
+}
+
 export function makeImageDataFromImgElement(image: HTMLImageElement) {
   if (!canvas) {
     canvas = document.createElement('canvas');
@@ -63,7 +67,7 @@ export function pixelateImage(image: ImageData, gridSize: number = 10) {
   // Place the averaged grid chunks into a data array at the correct index
   averagePixelChunks.forEach((pixelChunk) => {
     pixelChunk.subpixels.forEach((subpixel: IChunkSubpixel) => {
-      const chunkIndex = subpixel.coords[1] * image.width * 4 + subpixel.coords[0] * 4;
+      const chunkIndex = getInitialIndexForCoord(subpixel.coords[0], subpixel.coords[1], image.width);
 
       newImageDataArray[chunkIndex] = subpixel.pixel;
     });
@@ -119,11 +123,11 @@ function makeGridChunks(image: ImageData, gridSize: number): IGridChunk[] {
 
   for (let x = 0; x < image.width; x = x + gridSize) {
     for (let y = 0; y < image.height; y = y + gridSize) {
-      const chunkIndex = y * image.width * 4 + x * 4;
+      const chunkIndex = getInitialIndexForCoord(x, y, image.width);
 
       for (let chunkX = x; chunkX < x + gridSize; chunkX++) {
         for (let chunkY = y; chunkY < y + gridSize; chunkY++) {
-          const pixelIndex = chunkY * image.width * 4 + chunkX * 4;
+          const pixelIndex = getInitialIndexForCoord(chunkX, chunkY, image.width);
 
           const r = image.data[pixelIndex];
           const g = image.data[pixelIndex + 1];
