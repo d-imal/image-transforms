@@ -1,20 +1,28 @@
 import { IPixel } from '../types';
 
+/*
+ * Pixelating is just averaging the colors within each larger "pixel" area
+ * The algorithm implemented here:
+ * - Create chunks of pixels for each grid area that need to be averaged
+ * - Then iterate through the chunks and return a new chunk that has all the pixels in the chunk averaged
+ * - Then iterate through the averaged chunks and flatten them into one array
+ */
+
+// The format for storing the chunks
+interface IGridChunk {
+  coords: [number, number]; // These are coordinates in the "chunk" grid, not pixel coordinates
+  subpixels: IChunkSubpixel[];
+  average?: IPixel;
+}
+
 interface IChunkSubpixel {
   coords: [number, number];
   pixel: IPixel;
 }
 
-interface IGridChunk {
-  coords: [number, number];
-  subpixels: IChunkSubpixel[];
-  average?: IPixel;
-}
-
 export function pixelate(image: ImageData, gridSize: number = 10) {
-  const pixelChunks = makeGridChunks(image, gridSize);
-  const averagePixelChunks = makeAveragePixelChunks(pixelChunks, gridSize);
-
+  const gridChunks = makeGridChunks(image, gridSize);
+  const averagePixelChunks = makeAveragePixelChunks(gridChunks, gridSize);
   const newImageDataArray: IPixel[] = [];
 
   // Place the averaged grid chunks into a data array at the correct index
