@@ -1,6 +1,17 @@
 import fc from 'fast-check';
 import { invert, invertImageDataArray } from './invert';
 
+class ImageData {
+  public data: Uint8ClampedArray;
+  public colorSpace: PredefinedColorSpace = 'srgb';
+  public width = 100;
+  public height = 100;
+
+  constructor(data: Uint8ClampedArray) {
+    this.data = data;
+  }
+}
+
 describe('invertImageDataArray', () => {
   describe('properties', () => {
     it('should not equal the original input', () => {
@@ -38,7 +49,7 @@ function buildArbitraryImageData() {
     .uint8ClampedArray({ minLength: 4 })
     .filter((data) => data.length % 4 === 0)
     .map((data) => {
-      return new ImageData(data, 100, 100);
+      return new ImageData(data);
     });
 
   return arbitraryImageData;
