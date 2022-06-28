@@ -18,6 +18,21 @@ describe('pixelate', () => {
       );
     });
 
-    test('the average color value of all pixels in the output should equal the average color value of all pixels in the input', () => {});
+    test('the average color value of all pixels in the output should equal the average color value of all pixels in the input', () => {
+      fc.assert(
+        fc.property(buildArbitraryImageData(), (imageData) => {
+          const result = pixelate(imageData);
+          console.log('imageData', imageData.data);
+          console.log('result', imageData.data);
+
+          const averageInput = imageData.data.reduce((acc, item) => acc + item) / imageData.data.length;
+          const averageOutput = imageData.data.reduce((acc, item) => acc + item) / result.data.length;
+
+          console.log({ averageInput, averageOutput });
+
+          expect(averageOutput).toEqual(averageInput);
+        })
+      );
+    });
   });
 });

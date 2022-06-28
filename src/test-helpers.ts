@@ -13,7 +13,7 @@ export class MockImageData {
 
 export function buildArbitraryImageData() {
   const arbitraryImageData: fc.Arbitrary<MockImageData> = fc
-    .uint8ClampedArray({ minLength: 4 })
+    .uint8ClampedArray({ minLength: 40, min: 4 })
     .filter((data) => data.length % 4 === 0)
     .map((data) => new MockImageData(data));
 
