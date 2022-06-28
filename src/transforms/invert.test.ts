@@ -19,9 +19,7 @@ function buildArbitraryImageData() {
   const arbitraryImageData: fc.Arbitrary<MockImageData> = fc
     .uint8ClampedArray({ minLength: 4 })
     .filter((data) => data.length % 4 === 0)
-    .map((data) => {
-      return new MockImageData(data);
-    });
+    .map((data) => new MockImageData(data));
 
   return arbitraryImageData;
 }
