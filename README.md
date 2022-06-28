@@ -1,6 +1,7 @@
 # Image Transform Functions
 
-A simple library for transforming images in `ImageData` format. Works in all modern browsers.
+A simple library for transforming images in `ImageData` format. Works in all
+modern browsers.
 
 ## Available Transforms
 
@@ -8,13 +9,15 @@ A simple library for transforming images in `ImageData` format. Works in all mod
 
 `invert(image: ImageData): ImageData`
 
-Accepts an `ImageData` object and returns an `ImageData` object with the colors inverted. Opacity values remain unchanged.
+Accepts an `ImageData` object and returns an `ImageData` object with the colors
+inverted. Opacity values remain unchanged.
 
 ### `pixelate`
 
 `pixelate(image: ImageData, gridSize: number): ImageData`
 
-Accepts an image object and pixelates it, using `gridSize` to determine how large the pixels are.
+Accepts an image object and pixelates it, using `gridSize` to determine how
+large the pixels are.
 
 ## Demo
 
