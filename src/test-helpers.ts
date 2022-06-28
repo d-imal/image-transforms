@@ -13,12 +13,11 @@ export class MockImageData {
   }
 }
 
-export function buildArbitraryImageData(width = 20, height = 20) {
+export function buildArbitraryImageData(width = 20, height = 20): fc.Arbitrary<MockImageData> {
   const length = width * height * 4;
-  const arbitraryImageData: fc.Arbitrary<MockImageData> = fc
+
+  return fc
     .uint8ClampedArray({ minLength: length, maxLength: length })
     .filter((data) => data.length % 4 === 0)
     .map((data) => new MockImageData(data, width, height));
-
-  return arbitraryImageData;
 }
