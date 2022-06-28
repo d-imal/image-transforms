@@ -39,6 +39,7 @@ export function pixelate(image: ImageData, gridSize: number = 10) {
   return new ImageData(flatArray, image.width, image.height);
 }
 
+// The index of the red pixel at the given coordinate
 function getInitialIndexForCoord(x: number, y: number, width: number) {
   return x * 4 + y * (width * 4);
 }
@@ -116,6 +117,7 @@ function makeGridChunks(image: ImageData, gridSize: number): IGridChunk[] {
     }
   }
 
+  // Filter empty array slots
   return gridChunks.filter((pixelChunk) => !!pixelChunk);
 }
 
