@@ -50,7 +50,7 @@ describe('pixelate', () => {
     });
   });
 
-  test('each pixel on each pixelated area of the image should be the same', () => {
+  test('each pixel in each pixelated area of the image should be the same', () => {
     fc.assert(
       fc.property(buildArbitraryImageData(), (imageData) => {
         const gridSize = 10;
