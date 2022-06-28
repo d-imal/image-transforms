@@ -1,7 +1,7 @@
 import fc from 'fast-check';
 import { invert, invertImageDataArray } from './invert';
 
-class ImageData {
+class MockImageData {
   public data: Uint8ClampedArray;
   public colorSpace: PredefinedColorSpace = 'srgb';
   public width = 100;
@@ -45,11 +45,11 @@ describe('invertImageDataArray', () => {
 });
 
 function buildArbitraryImageData() {
-  const arbitraryImageData: fc.Arbitrary<ImageData> = fc
+  const arbitraryImageData: fc.Arbitrary<MockImageData> = fc
     .uint8ClampedArray({ minLength: 4 })
     .filter((data) => data.length % 4 === 0)
     .map((data) => {
-      return new ImageData(data);
+      return new MockImageData(data);
     });
 
   return arbitraryImageData;
@@ -61,6 +61,8 @@ describe('invert', () => {
       fc.assert(
         fc.property(buildArbitraryImageData(), (array) => {
           const result = invert(array);
+          console.log({ array, result });
+
           expect(result).not.toEqual(array);
         })
       );
