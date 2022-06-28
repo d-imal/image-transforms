@@ -12,6 +12,9 @@ class MockImageData {
   }
 }
 
+// @ts-ignore. Good enough for tests
+global.ImageData = MockImageData;
+
 describe('invertImageDataArray', () => {
   describe('properties', () => {
     it('should not equal the original input', () => {
@@ -61,7 +64,7 @@ describe('invert', () => {
       fc.assert(
         fc.property(buildArbitraryImageData(), (array) => {
           const result = invert(array);
-          console.log({ array, result });
+          // console.log({ array, result });
 
           expect(result).not.toEqual(array);
         })
