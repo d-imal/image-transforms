@@ -1,5 +1,6 @@
 import fc from 'fast-check';
 import { MockImageData, buildArbitraryImageData } from '../test-helpers';
+import { IPixel } from '../types';
 
 import { pixelate } from './pixelate';
 
@@ -47,5 +48,29 @@ describe('pixelate', () => {
         })
       );
     });
+  });
+
+  test('each pixel on each pixelated area of the image should be the same', () => {
+    fc.assert(
+      fc.property(buildArbitraryImageData(), (imageData) => {
+        const result = pixelate(imageData);
+        const { width, height } = imageData;
+        const gridAreaColors: Record<string, IPixel> = {};
+
+        for (let i = 0; i < imageData.data.length; i = i + 4) {
+          const x = (i % (width * 4)) / (width * 4);
+          const y = Math.floor(i / (height * 4)) / height;
+          const pixel: IPixel = [result.data[i], result.data[i + 1], result.data[i + 2], result.data[i + 3]];
+
+          const key = `${x},${y}`; // Wrong
+
+          if (!gridAreaColors[key]) {
+            gridAreaColors[key] = pixel;
+          } else {
+            expect(pixel).toEqual(gridAreaColors[key]);
+          }
+        }
+      })
+    );
   });
 });
