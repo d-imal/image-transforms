@@ -36,6 +36,12 @@ export function pixelate(image: ImageData, gridSize: number = 10) {
 
   const flatArray = new Uint8ClampedArray(newImageDataArray.flat());
 
+  if (!Number.isInteger((flatArray.length / image.width) * 4)) {
+    console.error('The gridSize must be a multiple of height and width');
+
+    return new ImageData(image.width, image.height);
+  }
+
   return new ImageData(flatArray, image.width, image.height);
 }
 

@@ -24,7 +24,7 @@ window.addEventListener('load', async () => {
 
   imagesToTransform.forEach((imageElement: Element, i: number) => {
     const imageData = makeImageDataFromImgElement(imageElement as HTMLImageElement);
-    const pixelatedImage = pixelate(imageData);
+    const pixelatedImage = pixelate(imageData, 20);
 
     renderImageToTable(i, pixelatedImage, 'pixelate');
   });
