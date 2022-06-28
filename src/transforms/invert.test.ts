@@ -1,5 +1,5 @@
 import fc from 'fast-check';
-import { invert, invertImageDataArray } from './invert';
+import { invert } from './invert';
 
 class MockImageData {
   public data: Uint8ClampedArray;
@@ -14,38 +14,6 @@ class MockImageData {
 
 // @ts-ignore. Good enough for tests
 global.ImageData = MockImageData;
-
-describe('invertImageDataArray', () => {
-  describe('properties', () => {
-    it('should not equal the original input', () => {
-      fc.assert(
-        fc.property(
-          fc.uint8ClampedArray({
-            minLength: 4,
-          }),
-          (array) => {
-            const result = invertImageDataArray(array);
-            expect(result).not.toEqual(array);
-          }
-        )
-      );
-    });
-
-    it('should equal the original input when called on the output a second time', () => {
-      fc.assert(
-        fc.property(
-          fc.uint8ClampedArray({
-            minLength: 4,
-          }),
-          (array) => {
-            const result = invertImageDataArray(invertImageDataArray(array));
-            expect(result).toEqual(array);
-          }
-        )
-      );
-    });
-  });
-});
 
 function buildArbitraryImageData() {
   const arbitraryImageData: fc.Arbitrary<MockImageData> = fc
@@ -73,15 +41,10 @@ describe('invert', () => {
 
     it('should equal the original input when called on the output a second time', () => {
       fc.assert(
-        fc.property(
-          fc.uint8ClampedArray({
-            minLength: 4,
-          }),
-          (array) => {
-            const result = invertImageDataArray(invertImageDataArray(array));
-            expect(result).toEqual(array);
-          }
-        )
+        fc.property(buildArbitraryImageData(), (array) => {
+          const result = invert(invert(array));
+          expect(result).toEqual(array);
+        })
       );
     });
   });

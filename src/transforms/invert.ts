@@ -11,16 +11,3 @@ export function invert(image: ImageData) {
 
   return new ImageData(transformedData, image.width, image.height);
 }
-
-export function invertImageDataArray(imageData: Uint8ClampedArray) {
-  const transformedimageData = new Uint8ClampedArray(imageData.length);
-
-  for (let i = 0; i < imageData.length; i += 4) {
-    transformedimageData[i] = Math.abs(imageData[i] - 255);
-    transformedimageData[i + 1] = Math.abs(imageData[i + 1] - 255);
-    transformedimageData[i + 2] = Math.abs(imageData[i + 2] - 255);
-    transformedimageData[i + 3] = imageData[i + 3];
-  }
-
-  return transformedimageData;
-}
