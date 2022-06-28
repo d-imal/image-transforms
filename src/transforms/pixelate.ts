@@ -30,11 +30,9 @@ export function pixelate(image: ImageData, gridSize: number = 10) {
     });
   });
 
-  const flatImageData = newImageDataArray.flat();
+  const flatArray = new Uint8ClampedArray(newImageDataArray.flat());
 
-  const newImageData = new ImageData(new Uint8ClampedArray(flatImageData), image.width, image.height);
-
-  return newImageData;
+  return new ImageData(flatArray, image.width, image.height);
 }
 
 function makeAveragePixelChunks(gridChunks: IGridChunk[], gridSize: number): IGridChunk[] {
