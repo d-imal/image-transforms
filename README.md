@@ -44,6 +44,9 @@ transforms.
 
 ## Testing
 
+To run tests, do:
+`yarn test`
+
 Functions are tested using jest and
 [fast-check](https://dubzzz.github.io/fast-check.github.com/) using
 property-based tests. The idea behind property-based tests is that instead of
