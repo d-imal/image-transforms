@@ -2,5 +2,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: Inconsolata-g, monospace;
+  font-family: monospace;
+  font-size: 20px;
+  background-color: #eee;
+}
+
+table {
+  font: inherit;
 }
