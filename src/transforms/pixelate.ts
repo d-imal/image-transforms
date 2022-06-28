@@ -110,3 +110,5 @@ function makeGridChunks(image: ImageData, gridSize: number): IGridChunk[] {
 
   return gridChunks.filter((pixelChunk) => !!pixelChunk);
 }
+
+export default pixelate;

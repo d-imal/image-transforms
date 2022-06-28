@@ -4,6 +4,8 @@ const RGBA_SIZE = 4;
 
 export class MockImageData {
   public data: Uint8ClampedArray;
+  // TODO: Figure out why Webpack can't find this DOM type
+  // @ts-ignore
   public colorSpace: PredefinedColorSpace = 'srgb';
   public width: number;
   public height: number;

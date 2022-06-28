@@ -11,3 +11,5 @@ export function invert(image: ImageData) {
 
   return new ImageData(transformedData, image.width, image.height);
 }
+
+export default invert;
