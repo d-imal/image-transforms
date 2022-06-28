@@ -3,19 +3,21 @@ import fc from 'fast-check';
 export class MockImageData {
   public data: Uint8ClampedArray;
   public colorSpace: PredefinedColorSpace = 'srgb';
-  public width = 100;
-  public height = 100;
+  public width: number;
+  public height: number;
 
-  constructor(data: Uint8ClampedArray) {
+  constructor(data: Uint8ClampedArray, width = 100, height = 100) {
     this.data = data;
+    this.width = width;
+    this.height = height;
   }
 }
 
-export function buildArbitraryImageData() {
+export function buildArbitraryImageData(width = 20, height = 20) {
   const arbitraryImageData: fc.Arbitrary<MockImageData> = fc
     .uint8ClampedArray({ minLength: 40, min: 4 })
     .filter((data) => data.length % 4 === 0)
-    .map((data) => new MockImageData(data));
+    .map((data) => new MockImageData(data, width, height));
 
   return arbitraryImageData;
 }
